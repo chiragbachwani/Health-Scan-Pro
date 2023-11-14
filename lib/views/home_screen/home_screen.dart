@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:healthscanpro/views/home_screen/search_screen.dart';
+import 'package:healthscanpro/views/new%20post/add_new_post.dart';
 
 import '../../const/const.dart';
 import '../../const/lists.dart';
@@ -9,6 +10,25 @@ import '../../widgets_common/home_buttons.dart';
 import 'components/featured_button.dart';
 import 'components/postcard.dart';
 
+class Post {
+  final String postId;
+  final String userId;
+  final String text;
+  final String imageUrl;
+  final String Likes;
+  final String CommentId;
+  final DateTime datetime;
+
+  Post(
+      {required this.postId,
+      required this.userId,
+      required this.datetime,
+      required this.Likes,
+      required this.text,
+      required this.imageUrl,
+       required this.CommentId, });
+}
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -17,7 +37,10 @@ class HomeScreen extends StatelessWidget {
     var controller = Get.find<Homecontroller>();
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Get..to(() => AddPostScreen());
+          ;
+        },
         backgroundColor: Colors.cyan,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25),
@@ -28,28 +51,29 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       backgroundColor: Colors.cyan[100],
-      body: ListView(
-        children: [
-          PostCard(
-            username: 'JohnDoe',
-            timeAgo: '2 hours ago',
-            postText: 'Just finished a great workout at the gym! 💪 #Fitness',
-            imageUrl:
-                'https://images.indianexpress.com/2023/04/fitness-future.jpg',
-            likes: 55,
-            isliked: false, // Replace with actual image URL
-          ),
-          PostCard(
-            username: 'HealthyEater',
-            timeAgo: '1 day ago',
-            postText:
-                'Enjoying a delicious and nutritious salad for lunch. #HealthyEating',
-            imageUrl: 'https://blog.flock.com/hubfs/028.jpg',
-            likes: 90,
-            isliked: true, // Replace with actual image URL
-          ),
-          // Add more PostCards as needed
-        ],
+      body: FutureBuilder(
+        future: FirestoreServices.getPosts(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation(turquoiseColor),
+              ),
+            );
+          } else {
+            var data = snapshot.data;
+            print(data.docs.data());
+            return PostCard(
+              likes: 42,
+              isliked: true,
+              username: 'JohnDoe',
+              timeAgo: '2 hours ago',
+              postText: 'Just finished a great workout at the gym! 💪 #Fitness',
+              imageUrl:
+                  'https://blog.flock.com/hubfs/028.jpg', // Replace with actual image URL
+            );
+          }
+        },
       ),
     );
     // return Container(

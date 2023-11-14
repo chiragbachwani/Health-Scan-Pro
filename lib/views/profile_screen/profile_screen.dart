@@ -101,13 +101,13 @@ class ProfileScreen extends StatelessWidget {
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 22.0),
                                           ),
-                                          Text(
-                                            '${data['email']}',
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 16.0,
-                                                color: Colors.lightBlueAccent),
-                                          ),
+                                          // Text(
+                                          //   '${data['email']}',
+                                          //   style: const TextStyle(
+                                          //       fontWeight: FontWeight.w500,
+                                          //       fontSize: 16.0,
+                                          //       color: Colors.lightBlueAccent),
+                                          // ),
                                           Text(
                                             '${data['profession']}',
                                             style: const TextStyle(

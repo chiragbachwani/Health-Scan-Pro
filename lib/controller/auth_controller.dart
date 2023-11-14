@@ -49,9 +49,6 @@ class AuthController extends GetxController {
       'email': email,
       'image_url': '',
       'id': currentuser!.uid,
-      'cart_count': '00',
-      'order_count': '00',
-      'wishlist': '00',
       'profession' : profession,
     });
   }

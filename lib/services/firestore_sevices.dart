@@ -99,8 +99,12 @@ class FirestoreServices {
         .get();
   }
 
+  static getPosts() {
+    return firestore.collection('Posts').get();
+  }
+
   static searchProducts(title) {
-    return firestore.collection(productsCollection).get();
+    return firestore..collection(productsCollection).get();
   }
 
   static getSubcategoryProduct(title) {
