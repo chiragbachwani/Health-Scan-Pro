@@ -24,7 +24,7 @@ class PostController extends GetxController {
       'dateTime': DateTime.now(),
       'user_id': currentuser!.uid,
       'post_id': postId,
-      'Likes': '',
+      'Likes': 0,
       'CommentId': commentId,
     });
     isloading(false);

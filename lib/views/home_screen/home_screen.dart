@@ -15,18 +15,40 @@ class Post {
   final String userId;
   final String text;
   final String imageUrl;
-  final String Likes;
-  final String CommentId;
+  final String likes;
+  final String commentId;
   final DateTime datetime;
 
-  Post(
-      {required this.postId,
-      required this.userId,
-      required this.datetime,
-      required this.Likes,
-      required this.text,
-      required this.imageUrl,
-       required this.CommentId, });
+  Post({
+    required this.postId,
+    required this.userId,
+    required this.datetime,
+    required this.likes,
+    required this.text,
+    required this.imageUrl,
+    required this.commentId,
+  });
+}
+
+Future<List<Post>> fetchPosts() async {
+  QuerySnapshot<Map<String, dynamic>> querySnapshot =
+      await FirebaseFirestore.instance.collection('Posts').get();
+
+  List<Post> posts = [];
+
+  querySnapshot.docs.forEach((doc) {
+    posts.add(Post(
+      datetime: (doc.data()['dateTime'] as Timestamp).toDate(),
+      postId: doc.data()['post_id'] ?? '',
+      userId: doc.data()['user_id'] ?? '',
+      text: doc.data()['text'] ?? '',
+      likes: doc.data()['Likes'].toString(),
+      commentId: doc.data()['CommentId'] ?? '',
+      imageUrl: doc.data()['image_url'] ?? '',
+    ));
+  });
+
+  return posts;
 }
 
 class HomeScreen extends StatelessWidget {
@@ -52,25 +74,28 @@ class HomeScreen extends StatelessWidget {
       ),
       backgroundColor: Colors.cyan[100],
       body: FutureBuilder(
-        future: FirestoreServices.getPosts(),
+        future: fetchPosts(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation(turquoiseColor),
-              ),
-            );
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator(); // Loading indicator while fetching data
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
           } else {
-            var data = snapshot.data;
-            print(data.docs.data());
-            return PostCard(
-              likes: 42,
-              isliked: true,
-              username: 'JohnDoe',
-              timeAgo: '2 hours ago',
-              postText: 'Just finished a great workout at the gym! 💪 #Fitness',
-              imageUrl:
-                  'https://blog.flock.com/hubfs/028.jpg', // Replace with actual image URL
+            List<Post> posts = snapshot.data ?? [];
+            print(posts[0].postId);
+            return ListView.builder(
+              itemCount: posts.length,
+              itemBuilder: (BuildContext context, int index) {
+                var data = posts[index];
+                return PostCard(
+                  likes: 40,
+                  isliked: true,
+                  username: 'JohnDoe',
+                  timeAgo: data.datetime.toString(),
+                  postText: data.text,
+                  imageUrl: data.imageUrl, // Replace with actual image URL
+                );
+              },
             );
           }
         },
