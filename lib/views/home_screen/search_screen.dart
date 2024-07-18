@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../const/const.dart';
 import '../../services/firestore_sevices.dart';
-import '../category_screen/item_details.dart';
 
 class SearchScreen extends StatelessWidget {
   final String? title;

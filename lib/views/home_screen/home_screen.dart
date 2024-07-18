@@ -75,6 +75,18 @@ class _HomeScreenState extends State<HomeScreen> {
     //     if()
     //   }
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Health Scan Pro",
+          style: TextStyle(color: Colors.black54),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(Icons.chat),
+          )
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Get..to(() => AddPostScreen());
@@ -99,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
             List<Post> posts = snapshot.data ?? [];
-            print(posts[0].postId);
+            // print(posts[0].postId);
             return ListView.builder(
               itemCount: posts.length,
               itemBuilder: (BuildContext context, int index) {

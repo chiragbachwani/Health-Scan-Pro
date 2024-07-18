@@ -4,10 +4,9 @@ import '../../const/const.dart';
 import '../../const/lists.dart';
 import '../../controller/product_controller.dart';
 import '../../widgets_common/bg_widget.dart';
-import 'category_details.dart';
 
-class CategoryScreen extends StatelessWidget {
-  const CategoryScreen({super.key});
+class DiagnosisScreen extends StatelessWidget {
+  const DiagnosisScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

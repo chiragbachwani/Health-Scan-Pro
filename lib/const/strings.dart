@@ -1,4 +1,4 @@
-const appname = "QuickBuy";
+const appname = "Health Scan Pro";
 const appversion = "Version 1.0.0";
 const credits = "By - Chirag Bachwani & Vedant Singh";
 const email = "Email";
