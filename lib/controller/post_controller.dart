@@ -12,22 +12,36 @@ import 'dart:io';
 import 'package:path/path.dart';
 
 class PostController extends GetxController {
+  String generateUUID() {
+    var uuid = Uuid();
+    return uuid.v4();
+  }
+
   var imageUploaded = false.obs;
   storePostData({text, imageurl}) async {
-    DocumentReference store =
-        firestore.collection("Posts").doc(currentuser!.uid);
-    var postId = const Uuid().v4();
-    var commentId = const Uuid().v4();
+    var postId = generateUUID();
+    var commentId = generateUUID();
+    DocumentReference store = firestore.collection("Posts").doc(postId);
+
     store.set({
       'text': text,
       'image_url': imageurl ?? '',
       'dateTime': DateTime.now(),
       'user_id': currentuser!.uid,
+      'likedby': [],
       'post_id': postId,
-      'Likes': 0,
+      'Likes': 1,
       'CommentId': commentId,
     });
-    isloading(false);
+    isloading.value = false;
+  }
+
+  increaselike({currentlike, postid}) async {
+    DocumentReference store =
+        firestore.collection("Posts").doc(currentuser!.uid);
+    store.set({
+      'Likes': currentlike + 1,
+    });
   }
 
   var profileImgPath = ''.obs;
@@ -64,7 +78,7 @@ class PostController extends GetxController {
 
   uplaodProfileImage() async {
     var filename = basename(profileImgPath.value);
-    var destination = "postimages/${currentuser!.uid}/filename";
+    var destination = "postimages/${currentuser!.uid}/$filename";
     Reference ref = FirebaseStorage.instance.ref().child(destination);
     await ref.putFile(File(profileImgPath.value));
     profileImagelink = await ref.getDownloadURL();

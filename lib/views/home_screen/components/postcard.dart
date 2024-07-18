@@ -5,17 +5,22 @@ class PostCard extends StatefulWidget {
   final String timeAgo;
   final String postText;
   final String? imageUrl;
-  int likes;
-  bool isliked;
+  final int likes;
+  var icon;
+  List likedby;
+  var ontap;
+  var ontapchat;
 
-  PostCard({
-    required this.username,
-    required this.timeAgo,
-    required this.postText,
-    this.imageUrl,
-    required this.likes,
-    required this.isliked,
-  });
+  PostCard(
+      {required this.username,
+      required this.timeAgo,
+      required this.postText,
+      required this.ontapchat,
+      this.imageUrl,
+      required this.icon,
+      required this.likedby,
+      required this.likes,
+      required this.ontap});
 
   @override
   _PostCardState createState() => _PostCardState();
@@ -70,16 +75,8 @@ class _PostCardState extends State<PostCard> {
                 Row(
                   children: [
                     GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          widget.isliked = !widget.isliked;
-                          widget.likes += widget.isliked ? 1 : -1;
-                        });
-                      },
-                      child: Icon(
-                        widget.isliked ? Icons.favorite : Icons.favorite_border,
-                        color: widget.isliked ? Colors.red : null,
-                      ),
+                      onTap: widget.ontap,
+                      child: widget.icon,
                     ),
                     SizedBox(width: 4.0),
                     Text('${widget.likes}'),
@@ -92,7 +89,10 @@ class _PostCardState extends State<PostCard> {
                     Text('15'), // Replace with actual comment count
                   ],
                 ),
-                Icon(Icons.send), // Option for direct message
+                IconButton(
+                  icon: Icon(Icons.send),
+                  onPressed: widget.ontapchat,
+                ), // Option for direct message
               ],
             ),
           ],

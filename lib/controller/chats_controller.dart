@@ -30,7 +30,7 @@ class ChatsController extends GetxController {
   getChatId() async {
     isloading(true);
     await chats
-        .where('users', isEqualTo: {friendId: null, currentId: null})
+        .where('Users', isEqualTo: {friendId: null, currentId: null})
         .limit(1)
         .get()
         .then((QuerySnapshot snapshot) {

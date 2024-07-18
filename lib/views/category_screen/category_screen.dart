@@ -1,3 +1,5 @@
+import 'package:healthscanpro/views/alzheimer_screen/alzheimer_screen.dart';
+
 import '../../const/const.dart';
 import '../../const/lists.dart';
 import '../../controller/product_controller.dart';
@@ -9,7 +11,7 @@ class CategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var controller = Get.put(ProductController());
+    var controller = Get.put(DiagnosisController());
 
     return bgWidget(
         child: Scaffold(
@@ -49,7 +51,8 @@ class CategoryScreen extends StatelessWidget {
                 .outerShadowMd
                 .make()
                 .onTap(() {
-              controller.getSubCategories(categoryList[index]);
+              // Get.to(() => AlzheimerScreen());
+              // controller.getSubCategories(categoryList[index]);
               // Get.to(() => CategoryDetails(title: categoryList[index]));
             });
           },

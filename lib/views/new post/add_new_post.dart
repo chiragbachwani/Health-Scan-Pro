@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:healthscanpro/controller/post_controller.dart';
+import 'package:healthscanpro/views/home_screen/home.dart';
 import 'package:healthscanpro/views/home_screen/home_screen.dart';
 
 import '../../const/const.dart';
@@ -35,7 +36,7 @@ class AddPostScreen extends StatelessWidget {
                     SizedBox(height: 16.0),
                     Obx(
                       () => Visibility(
-                        visible: true,
+                        visible: controller.imageUploaded.value,
                         child: Container(
                           height: 250,
                           decoration: BoxDecoration(
@@ -60,32 +61,38 @@ class AddPostScreen extends StatelessWidget {
                 ),
               ),
               Spacer(),
-              SizedBox(
-                width: context.screenWidth,
-                height: 60,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.cyan,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0))),
-                  onPressed: () async {
-                    controller.isloading(true);
-                    await controller.uplaodProfileImage();
-                    await controller.storePostData(
-                        text: controller.postTextController.text,
-                        imageurl: controller.profileImagelink);
-                    controller.imageUploaded.value = false;
+              Obx(
+                () => SizedBox(
+                    width: context.screenWidth,
+                    height: 60,
+                    child: !controller.isloading.value
+                        ? ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.cyan,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(0))),
+                            onPressed: () async {
+                              controller.isloading(true);
+                              await controller.uplaodProfileImage();
+                              await controller.storePostData(
+                                  text: controller.postTextController.text,
+                                  imageurl: controller.profileImagelink);
+                              controller.imageUploaded.value = false;
 
-                    Get.to(() => HomeScreen());
-                  },
-                  child: Text(
-                    'Post',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                        fontSize: 18),
-                  ),
-                ),
+                              Get.to(() => Home());
+                            },
+                            child: Text(
+                              'Post',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                  fontSize: 18),
+                            ),
+                          )
+                        : Center(
+                            child: CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation(Colors.cyan)))),
               ),
             ],
           ),
